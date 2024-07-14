@@ -1,3 +1,4 @@
+from re import L
 import time
 '''
     Backtracking
@@ -18,7 +19,7 @@ list, tuple object where list stores row, col and tuple stores possible choices
 
 '''
 
-_2dlist : list[list[int]] = [[0,0,5,0,6,2,0,0,3], \
+'''_2dlist : list[list[int]] = [[0,0,5,0,6,2,0,0,3], \
                              [0,0,0,1,0,5,2,9,0], \
                              [9,0,0,3,7,0,6,0,0], \
                              [6,0,2,5,3,1,0,4,0], \
@@ -28,12 +29,37 @@ _2dlist : list[list[int]] = [[0,0,5,0,6,2,0,0,3], \
                              [0,9,6,0,0,8,0,0,7], \
                              [2,8,4,0,0,0,0,0,1]] 
                              
+                             Easy version
+                             
+                             '''
+
+
+_2dlist : list[list[int]] = [[0,0,6,0,8,0,4,0,0], \
+                             [0,0,7,0,0,1,0,8,0], \
+                             [0,0,0,4,5,0,0,0,0], \
+                             [3,0,0,2,0,5,1,0,0], \
+                             [2,0,0,0,0,6,0,9,0], \
+                             [5,0,0,0,0,0,0,4,0], \
+                             [0,0,9,0,0,2,0,1,0], \
+                             [6,0,0,0,0,8,0,0,3], \
+                             [0,0,0,0,0,0,0,0,0]]
+                             # Extreme
+
+'''_2dlist : list[list[int]] = [[0,2,6,0,4,0,8,7,0], \
+                             [0,0,0,7,0,6,0,0,9], \
+                             [0,0,0,0,0,0,0,0,0], \
+                             [0,0,0,0,0,0,0,0,0], \
+                             [0,0,0,0,0,0,0,0,0], \
+                             [0,0,0,0,0,0,0,0,0], \
+                             [5,6,8,0,1,0,0,2,7], \
+                             [0,0,0,0,0,0,0,0,5], \
+                             [0,0,0,0,0,0,0,0,3]]'''
 
 transform2lin = lambda a: a[0]*9+a[1]   
 transform2list = lambda num: [int(num/9), int(num%9)]
 changes = [True]
 
-
+runs = 0
 
 # Pseudocode
 # changes made this traversal = True
@@ -62,19 +88,22 @@ def fillCell(fillindex, filldigit):
     _2dlist[fillindex[0]][fillindex[1]] = filldigit
 
 def getNextCell(curindex) -> list[int]:
+    rtrn : list[int] = [0,0]
+
     if curindex[0] <= 8 :
         if curindex[1] < 8:
-            curindex[1] += 1
-            return curindex
+            rtrn[0] = curindex[0]
+            rtrn[1] = curindex[1] + 1
+            return rtrn
         elif curindex[1] == 8 and curindex[0] == 8:
-            curindex = [0,0] 
+            rtrn = [-1,-1] 
         else:    
-            curindex[1]  = 0
-            curindex[0] += 1
+            rtrn[1] = 0
+            rtrn[0] = curindex[0] + 1
     else:
         print("#2 happened")
-        curindex = [0,0]
-    return curindex
+        rtrn = [-1,-1]
+    return rtrn
     
 def validate(curindex, digit) -> bool:
     if _2dlist[curindex[0]].count(digit) != 0:
@@ -111,7 +140,28 @@ def validate(curindex, digit) -> bool:
 
     return True
         
-        
+def solve(curindex):
+    global runs
+    runs+=1
+    if curindex.count(-1) !=1:    
+        if digitAt(curindex) == 0:
+            validnums=0
+            for i in range(1,10):
+                if validate(curindex,i) == True:
+                    validnums +=1
+                    fillCell(curindex,i)
+                    solve(getNextCell(curindex))
+                    if isSolved():
+                        return    
+                    fillCell(curindex,0)
+                else:
+                    pass
+        else:
+            solve(getNextCell(curindex))
+            
+    else: 
+        return
+
 def show():
     for i in _2dlist:
         print(i)
@@ -137,22 +187,41 @@ def traverse() -> None:
                     fillCell(cur_index,decisions[counter][0])
                     changes[0] = True
     else:
-        show()
-        time.sleep(3)
-        exit()
+        print("Here? ")
 
-    
+   
+
                 
-    
+def isSolved() -> bool:
+    zcount = 0
+    for counter in range(81):  
+            cur_index = transform2list(counter)
+            zero_or_not = digitAt(cur_index) == 0
+            if(zero_or_not == True):
+                zcount += 1
+    if zcount == 0:
+        return True
+    return False
 
 def main():
+    global runs
     if(changes[0] == False):
         pass
         print("#1 happened! ")
     else:
         while(changes[0] == True):
             traverse()
-            show()
+            
+    if isSolved():
+        pass
+    else:
+        show()
+        print("With recursion")
+        solve([0,0])
+
+
+    show()
+    print(f'{runs} runs')
 
 
 if __name__ == '__main__':
