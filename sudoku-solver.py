@@ -1,5 +1,3 @@
-from re import L
-import time
 '''
     Backtracking
 
