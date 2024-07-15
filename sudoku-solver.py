@@ -32,7 +32,7 @@ list, tuple object where list stores row, col and tuple stores possible choices
                              '''
 
 
-_2dlist : list[list[int]] = [[0,0,6,0,8,0,4,0,0], \
+'''_2dlist : list[list[int]] = [[0,0,6,0,8,0,4,0,0], \
                              [0,0,7,0,0,1,0,8,0], \
                              [0,0,0,4,5,0,0,0,0], \
                              [3,0,0,2,0,5,1,0,0], \
@@ -42,8 +42,9 @@ _2dlist : list[list[int]] = [[0,0,6,0,8,0,4,0,0], \
                              [6,0,0,0,0,8,0,0,3], \
                              [0,0,0,0,0,0,0,0,0]]
                              # Extreme
+'''
 
-'''_2dlist : list[list[int]] = [[0,2,6,0,4,0,8,7,0], \
+_2dlist : list[list[int]] = [[0,2,6,0,4,0,8,7,0], \
                              [0,0,0,7,0,6,0,0,9], \
                              [0,0,0,0,0,0,0,0,0], \
                              [0,0,0,0,0,0,0,0,0], \
@@ -51,7 +52,8 @@ _2dlist : list[list[int]] = [[0,0,6,0,8,0,4,0,0], \
                              [0,0,0,0,0,0,0,0,0], \
                              [5,6,8,0,1,0,0,2,7], \
                              [0,0,0,0,0,0,0,0,5], \
-                             [0,0,0,0,0,0,0,0,3]]'''
+                             [0,0,0,0,0,0,0,0,3]]
+#This has a solution with first digit as 3 and 9
 
 transform2lin = lambda a: a[0]*9+a[1]   
 transform2list = lambda num: [int(num/9), int(num%9)]
@@ -219,6 +221,8 @@ def main():
 
 
     show()
+    if isSolved() == False:
+        print("No solution found")
     print(f'{runs} runs')
 
 
