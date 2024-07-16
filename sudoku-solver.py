@@ -57,9 +57,10 @@ _2dlist : list[list[int]] = [[0,2,6,0,4,0,8,7,0], \
 
 transform2lin = lambda a: a[0]*9+a[1]   
 transform2list = lambda num: [int(num/9), int(num%9)]
-changes = [True]
+changes : list[bool] = [True]
+multiplesols : list[bool] = [True]
+runs : int = 0
 
-runs = 0
 
 # Pseudocode
 # changes made this traversal = True
@@ -140,24 +141,31 @@ def validate(curindex, digit) -> bool:
 
     return True
         
-def solve(curindex):
+def solve(curindex : list[int] , maxtried: int):
     global runs
     runs+=1
+    if maxtried == 9:
+        return
     if curindex.count(-1) !=2:    
         if digitAt(curindex) == 0:
             validnums=0
             for i in range(1,10):
-                if validate(curindex,i) == True:
-                    validnums +=1
-                    fillCell(curindex,i)
-                    solve(getNextCell(curindex))
-                    if isSolved():
-                        return    
-                    fillCell(curindex,0)
-                else:
-                    pass
+                if i> maxtried:
+                    if validate(curindex,i) == True:
+                        validnums +=1
+                        fillCell(curindex,i)
+                        solve(getNextCell(curindex),0)
+                        if isSolved():
+                            if multiplesols == [False]:   
+                                return
+                            else:
+                                solve(curindex,i)
+                                return    
+                        fillCell(curindex,0)
+                    else:
+                        pass
         else:
-            solve(getNextCell(curindex))
+            solve(getNextCell(curindex),0)
             
     else: 
         return
@@ -217,7 +225,7 @@ def main():
     else:
         show()
         print("With recursion")
-        solve([0,0])
+        solve([0,0],0)
 
 
     show()
