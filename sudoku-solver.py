@@ -207,7 +207,7 @@ def main():
     global runs
     if(changes[0] == False):
         pass
-        print("#1 happened! ")
+        #print("No cell is crystal clear solvable (Nice puzzle or invalid)")
     else:
         while(changes[0] == True):
             traverse()
