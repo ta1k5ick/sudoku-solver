@@ -143,7 +143,7 @@ def validate(curindex, digit) -> bool:
 def solve(curindex):
     global runs
     runs+=1
-    if curindex.count(-1) !=1:    
+    if curindex.count(-1) !=2:    
         if digitAt(curindex) == 0:
             validnums=0
             for i in range(1,10):
