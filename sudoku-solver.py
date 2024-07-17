@@ -257,8 +257,7 @@ def main():
             show()
             print("With recursion")
             solve()
-        if multiplesols == [True]:
-            print(f'{solutions} solutions')
+        print(f'{solutions} solutions')
         print(f'{runs} runs')
     else:
         print("|-----------------|")
