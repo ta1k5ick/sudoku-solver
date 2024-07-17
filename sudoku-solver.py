@@ -11,29 +11,6 @@
 
 
 
-
-
-# Pseudocode
-# changes made this traversal = True
-
-# If changes made this traversal = False
-    #Break
-#Else
-    # Traverse the sudoku
-
-        #find next zero 
-            # put every digit from 1 to 9 and validate_the_cell(row, col) the row, column and subgrid 
-                # If validated, store it in a list as [[row,col].[choices]]
-
-            # If choices length is 1, enter the choice in the sudoku using fill(row, col, rightDigit)
-            # Set changes made this traversal = True 
-
-        # if no zero found, sudoku solved
-        # else if changes made this traversal is False 
-
-    #If traversal ends with no changes made in traversal
-
-
 '''_2dlist : list[list[int]] = [[0,0,5,0,6,2,0,0,3], \
                              [0,0,0,1,0,5,2,9,0], \
                              [9,0,0,3,7,0,6,0,0], \
@@ -84,25 +61,8 @@ def digitAt(checkindex) -> int:
 def fillCell(fillindex, filldigit):
     _2dlist[fillindex[0]][fillindex[1]] = filldigit
 
-def getNextCell(curindex) -> list[int]:
-    rtrn : list[int] = [0,0]
-
-    if curindex[0] <= 8 :
-        if curindex[1] < 8:
-            rtrn[0] = curindex[0]
-            rtrn[1] = curindex[1] + 1
-            return rtrn
-        elif curindex[1] == 8 and curindex[0] == 8:
-            rtrn = [-1,-1] 
-        else:    
-            rtrn[1] = 0
-            rtrn[0] = curindex[0] + 1
-    else:
-        print("#2 happened")
-        rtrn = [-1,-1]
-    return rtrn
     
-def validate(curindex, digit) -> bool:
+def possible(curindex, digit) -> bool:
 
     if _2dlist[curindex[0]].count(digit) != 0:
         #print("row failure")
@@ -166,12 +126,12 @@ def puzzleValid() -> bool:
                     return False;
                 
     
-                subgrindindex = 0
+                subgridindex = 0
                 for c in range(9):
                     if subgrid[c].count(ind) == 1:
-                        subgrindindex = i
+                        subgridindex = i
                 counter = 0
-                for pos in subgrid[subgrindindex]:
+                for pos in subgrid[subgridindex]:
                     if grid[pos[0]][pos[1]] == digit:
                         counter += 1
                     if counter > 1:
@@ -190,7 +150,7 @@ def solve():
             if _2dlist[i][j] ==0:
                 ind = [i,j]
                 for k in range(1,10):
-                    if validate(ind,k):
+                    if possible(ind,k):
                         _2dlist[i][j] = k
                         solve()
                         _2dlist[i][j] = 0
@@ -219,7 +179,7 @@ def traverse() -> None:
             zero_or_not = digitAt(cur_index) == 0
             if(zero_or_not == True):
                 for i in range(1,10):
-                    if validate(cur_index,i) == True:
+                    if possible(cur_index,i) == True:
                         decisions[counter].append(i)
                 if len(decisions[counter]) == 1:
                     fillCell(cur_index,decisions[counter][0])
@@ -246,7 +206,6 @@ def main():
     if puzzleValid():
         if(changes[0] == False):
             pass
-            print("#1 happened! ")
         else:
             while(changes[0] == True):
                 traverse()
