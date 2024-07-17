@@ -10,12 +10,7 @@
 '''
 
 
-'''
-Random idea
 
-list, tuple object where list stores row, col and tuple stores possible choices
-
-'''
 
 
 # Pseudocode
